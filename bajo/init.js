@@ -2,18 +2,24 @@ import pino from 'pino'
 
 export default async function () {
   const { getConfig, logLevels, _, log } = this.bajo.helper
+  const self = this
   const config = getConfig()
   const opts = getConfig('bajoLogger').log || {}
   opts.level = config.log.level
   if (_.get(opts, 'transport.target') === 'pino-pretty')
     _.set(opts, 'transport.options.translateTime', `UTC:yyyy-mm-dd'T'HH:MM:ss.l'Z'`)
-  const instance = pino(opts)
-  const logger = {}
+  this.bajoLogger.instance = pino(opts)
+  const logger = {
+    child: function () {
+      const child = Object.create(this)
+      child.pino = self.bajoLogger.instance.child({})
+      return child
+    }
+  }
   _.forOwn(logLevels, (v, k) => {
-    logger[k] = ({ data, msg, args }) => {
-      if (config.env === 'dev' && k.length < 5) msg = _.pad('', 5 - k.length, ' ') + msg
+    logger[k] = (data, msg, ...args) => {
       const params = _.isEmpty(data) ? [msg, ...args] : [data, msg, ...args]
-      instance[k](...params)
+      this.bajoLogger.instance[k](...params)
     }
   })
   this.bajoLogger.logger = logger
