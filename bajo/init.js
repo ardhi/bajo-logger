@@ -1,7 +1,8 @@
 import pino from 'pino'
 
 export default async function () {
-  const { getConfig, logLevels, _, log } = this.bajo.helper
+  const { getConfig, logLevels, getPkg, log } = this.bajo.helper
+  const _ = await getPkg('lodash')
   const self = this
   const config = getConfig()
   const opts = getConfig('bajoLogger').log || {}
