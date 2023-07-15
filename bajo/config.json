@@ -1,4 +1,5 @@
 {
+  "alias": "log",
   "log": {
     "transport": {
       "target": "pino-pretty",
