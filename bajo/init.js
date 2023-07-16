@@ -21,7 +21,12 @@ export default async function () {
   }
   _.forOwn(logLevels, (v, k) => {
     logger[k] = (data, msg, ...args) => {
-      if (i18n) msg = i18n.t(msg, { ns: args[0] === 'bajo' ? 'bajoI18N' : args[0], postProcess: 'sprintf', sprintf: null })
+      if (i18n) {
+        let ns = args[0]
+        if (ns === 'bajo') ns = 'bajoI18N'
+        if (_.isPlainObject(args[1])) msg = i18n.t(msg, _.merge({ ns }, args[1]))
+        else msg = i18n.t(msg, { ns, postProcess: 'sprintf', sprintf: null })
+      }
       const params = _.isEmpty(data) ? [msg, ...args] : [data, msg, ...args]
       this.bajoLogger.instance[k](...params)
     }
