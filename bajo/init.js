@@ -5,7 +5,7 @@ async function init () {
   const { get, set, forOwn, isEmpty } = await importPkg('lodash-es')
   const self = this
   const config = getConfig()
-  const opts = getConfig('bajoLogger').log || {}
+  const opts = getConfig('bajoLogger').log ?? {}
   opts.level = config.log.level
   if (get(opts, 'transport.target') === 'pino-pretty') {
     set(opts, 'transport.options.translateTime', 'UTC:yyyy-mm-dd\'T\'HH:MM:ss.l\'Z\'')
