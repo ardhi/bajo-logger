@@ -1,8 +1,8 @@
 import pino from 'pino'
 
 async function init () {
-  const { getConfig, logLevels, importPkg, log } = this.bajo.helper
-  const { get, set, forOwn, isEmpty } = await importPkg('lodash-es')
+  const { getConfig, logLevels, log } = this.bajo.helper
+  const { get, set, forOwn, isEmpty } = this.bajo.helper._
   const self = this
   const config = getConfig()
   const opts = getConfig('bajoLogger').log ?? {}

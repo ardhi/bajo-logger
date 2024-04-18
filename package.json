@@ -1,6 +1,6 @@
 {
   "name": "bajo-logger",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Pino logger for Bajo Framework",
   "main": "index.js",
   "scripts": {
