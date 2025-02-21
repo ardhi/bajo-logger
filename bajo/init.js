@@ -31,7 +31,7 @@ async function init () {
     }
   })
   this.logger = logger
-  this.log.debug('Switched to \'%s\' logger', 'Pino')
+  this.log.debug('switchedToLogger%s', 'Pino')
 }
 
 export default init
