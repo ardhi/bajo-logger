@@ -2,9 +2,7 @@ import pino from 'pino'
 
 async function init () {
   const { logLevels } = this.app.bajo
-  const { sprintf } = this.app.bajo.lib
-  const { get, set, forOwn, isEmpty, isPlainObject } = this.app.bajo.lib._
-  const i18n = this.app.bajoI18N
+  const { get, set, forOwn, isEmpty } = this.app.bajo.lib._
   const me = this
   const opts = this.getConfig().log ?? {}
   opts.level = this.app.bajo.config.log.level
@@ -22,10 +20,7 @@ async function init () {
   forOwn(logLevels, (v, k) => {
     logger[k] = (...args) => {
       let [data, msg, ...rest] = args
-      if (i18n) {
-        if (isPlainObject(args[0])) msg = i18n.t(msg, rest[0])
-        else msg = i18n.t(msg, { ns: me.name, postProcess: 'sprintf', sprintf: rest })
-      } else msg = sprintf(msg, ...rest)
+      msg = me.print.write(msg, ...rest)
       const params = isEmpty(data) ? [msg, ...rest] : [data, msg, ...rest]
       this.instance[k](...params)
     }
