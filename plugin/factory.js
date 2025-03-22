@@ -13,7 +13,7 @@ async function factory (pkgName) {
             target: 'pino-pretty',
             options: {
               colorize: true,
-              ignore: 'pid,hostname'
+              ignore: '`pid,hostname`'
             }
           }
         }
@@ -21,8 +21,9 @@ async function factory (pkgName) {
     }
 
     init = async () => {
-      const { logLevels } = this.app.bajo
+      const { logLevels, importModule } = this.app.bajo
       const { get, set, forOwn, isEmpty } = this.app.bajo.lib._
+      const { isIgnored } = await importModule('bajo:/boot/class/log.js', { asDefaultImport: false })
       const me = this
       const opts = this.getConfig().log ?? {}
       opts.level = this.app.bajo.config.log.level
@@ -39,10 +40,14 @@ async function factory (pkgName) {
       }
       forOwn(logLevels, (v, k) => {
         logger[k] = (...args) => {
-          let [data, msg, ...rest] = args
-          msg = me.print.write(msg, ...rest)
+          const [data, msg, ...rest] = args
           const params = isEmpty(data) ? [msg, ...rest] : [data, msg, ...rest]
-          this.instance[k](...params)
+          const { result: ns } = me.app.bajo.extractText(msg, '[', ']')
+          if (!ns) {
+            this.instance[k](...params)
+            return
+          }
+          if (!isIgnored.call(me.app[ns], k)) this.instance[k](...params)
         }
       })
       this.logger = logger
