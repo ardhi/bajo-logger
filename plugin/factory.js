@@ -22,7 +22,7 @@ async function factory (pkgName) {
 
     init = async () => {
       const { logLevels, importModule } = this.app.bajo
-      const { get, set, forOwn, isEmpty } = this.app.bajo.lib._
+      const { get, set, forOwn, isEmpty } = this.lib._
       const { isIgnored } = await importModule('bajo:/boot/class/log.js', { asDefaultImport: false })
       const me = this
       const opts = this.getConfig().log ?? {}
