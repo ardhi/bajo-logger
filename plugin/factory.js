@@ -23,6 +23,7 @@ async function factory (pkgName) {
     init = async () => {
       const { logLevels, importModule } = this.app.bajo
       const { get, set, forOwn, isEmpty } = this.lib._
+      const { extractText } = this.lib.aneka
       const { isIgnored } = await importModule('bajo:/boot/class/log.js', { asDefaultImport: false })
       const me = this
       const opts = this.getConfig().log ?? {}
@@ -42,7 +43,7 @@ async function factory (pkgName) {
         logger[k] = (...args) => {
           const [data, msg, ...rest] = args
           const params = isEmpty(data) ? [msg, ...rest] : [data, msg, ...rest]
-          const { result: ns } = me.app.bajo.extractText(msg, '[', ']')
+          const { result: ns } = extractText(msg, '[', ']')
           if (!ns) {
             this.instance[k](...params)
             return
