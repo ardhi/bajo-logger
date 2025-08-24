@@ -24,8 +24,8 @@ async function factory (pkgName) {
       const { importModule } = this.app.bajo
       const { get, set, forOwn, isEmpty } = this.lib._
       const { extractText } = this.lib.aneka
-      const logLevels = await importModule('bajo:/boot/lib/log-levels.js')
-      const { isIgnored } = await importModule('bajo:/boot/class/log.js', { asDefaultImport: false })
+      const logLevels = await importModule('bajo:/lib/log-levels.js')
+      const { isIgnored } = await importModule('bajo:/class/base/log.js', { asDefaultImport: false })
       const me = this
       const opts = this.getConfig().log ?? {}
       opts.level = this.app.bajo.config.log.level
