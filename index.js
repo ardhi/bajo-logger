@@ -3,10 +3,11 @@ import pino from 'pino'
 async function factory (pkgName) {
   const me = this
 
-  return class BajoLogger extends this.lib.Plugin {
+  class BajoLogger extends this.lib.Plugin {
+    static alias = 'log'
+
     constructor () {
       super(pkgName, me.app)
-      this.alias = 'log'
       this.config = {
         log: {
           transport: {
@@ -59,6 +60,8 @@ async function factory (pkgName) {
     start = async () => {
     }
   }
+
+  return BajoLogger
 }
 
 export default factory
