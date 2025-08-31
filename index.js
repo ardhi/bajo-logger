@@ -3,7 +3,7 @@ import pino from 'pino'
 async function factory (pkgName) {
   const me = this
 
-  class BajoLogger extends this.lib.Plugin {
+  class BajoLogger extends this.app.pluginClass.base {
     static alias = 'log'
 
     constructor () {
@@ -23,8 +23,8 @@ async function factory (pkgName) {
 
     init = async () => {
       const { importModule } = this.app.bajo
-      const { get, set, forOwn, isEmpty } = this.lib._
-      const { extractText } = this.lib.aneka
+      const { get, set, forOwn, isEmpty } = this.app.lib._
+      const { extractText } = this.app.lib.aneka
       const logLevels = await importModule('bajo:/lib/log-levels.js')
       const { isIgnored } = await importModule('bajo:/class/base/log.js', { asDefaultImport: false })
       const me = this
