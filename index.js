@@ -1,8 +1,19 @@
 import pino from 'pino'
 
+/**
+ * Plugin factory
+ *
+ * @param {string} pkgName - NPM package name
+ * @returns {class}
+ */
 async function factory (pkgName) {
   const me = this
 
+  /**
+   * BajoLogger class
+   *
+   * @class
+   */
   class BajoLogger extends this.app.pluginClass.base {
     static alias = 'log'
 

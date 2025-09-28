@@ -4,7 +4,8 @@
   "description": "Pino logger for Bajo Framework",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build-doc": "jsdoc -c .jsdoc.conf.json",
+    "test": "mocha"
   },
   "type": "module",
   "bajo": {
@@ -30,5 +31,9 @@
   "dependencies": {
     "pino": "^9.6.0",
     "pino-pretty": "^13.0.0"
+  },
+  "devDependencies": {
+    "clean-jsdoc-theme": "^4.3.0",
+    "jsdoc-plugin-intersection": "^1.0.4"
   }
 }
